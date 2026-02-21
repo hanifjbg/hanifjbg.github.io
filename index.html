@@ -1,1 +1,584 @@
-Hellow Hanif.
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanif Saifudin | Event Production & Tech Ops Manager</title>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#0a0a0a',
+                            gold: '#f59e0b', // Amber 500
+                            goldDark: '#d97706', // Amber 600
+                            slate: '#1e293b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Parallax & Animation Base */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .parallax-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 120%;
+            z-index: -1;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+
+        .blur-blob {
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            filter: blur(60px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .modal-active { overflow: hidden; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 10px; }
+
+        /* Section Clear Break & Full Screen */
+        section { position: relative; overflow: hidden; border-bottom: 1px solid rgba(245, 158, 11, 0.1); min-height: 100vh; display: flex; align-items: center; }
+        
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+        .glitch-hover:hover { animation: glitch 0.3s linear infinite; }
+
+        /* Arrow styling */
+        .nav-arrow {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #f59e0b;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .nav-arrow:hover { color: #ffffff; }
+    </style>
+</head>
+<body class="bg-brand-black text-slate-100 font-sans selection:bg-brand-gold selection:text-brand-black">
+
+    <!-- FLOATING BACK TO TOP -->
+    <button id="backToTop" class="fixed bottom-8 right-8 z-[60] p-3 bg-brand-gold text-brand-black rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 hover:scale-110">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 border-b border-white/5 backdrop-blur-xl transition-all duration-300">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center max-w-7xl font-mono">
+            <div class="flex items-center space-x-3">
+                <div class="w-2 h-2 bg-brand-gold rounded-full animate-pulse shadow-[0_0_10px_#f59e0b]"></div>
+                <a href="#" class="text-sm font-bold tracking-[0.2em] uppercase italic">HANIF_SAIFUDIN.OPS</a>
+            </div>
+            
+            <div class="hidden md:flex space-x-8 items-center text-[10px] font-bold uppercase tracking-widest">
+                <a href="#about" class="hover:text-brand-gold transition-colors">01_ABOUT</a>
+                <a href="#why-hire" class="hover:text-brand-gold transition-colors">02_VALUE</a>
+                <a href="#experience" class="hover:text-brand-gold transition-colors">03_TIMELINE</a>
+                <a href="#projects" class="hover:text-brand-gold transition-colors">04_PROJECTS</a>
+                <a href="#contact" class="px-4 py-2 bg-brand-gold text-brand-black rounded hover:bg-white transition-all">05_CONNECT</a>
+            </div>
+            
+            <button id="mobile-menu-btn" class="md:hidden text-brand-gold">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mobile-menu" class="fixed inset-0 z-[100] bg-brand-black hidden flex-col items-center justify-center space-y-8 font-mono text-xl uppercase tracking-widest">
+        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-brand-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg></button>
+        <a href="#about" onclick="toggleMobileMenu()">01_ABOUT</a>
+        <a href="#why-hire" onclick="toggleMobileMenu()">02_VALUE</a>
+        <a href="#experience" onclick="toggleMobileMenu()">03_TIMELINE</a>
+        <a href="#projects" onclick="toggleMobileMenu()">04_PROJECTS</a>
+        <a href="#contact" onclick="toggleMobileMenu()">05_CONNECT</a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative">
+        <div class="parallax-bg" style="background: radial-gradient(circle at 70% 30%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);"></div>
+        <div class="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="reveal active">
+                <div class="flex items-center space-x-3 mb-6">
+                    <span class="px-3 py-1 bg-brand-gold/10 border border-brand-gold/30 rounded text-brand-gold font-mono text-[10px] uppercase tracking-widest">Portofolio / 2026</span>
+                    <span class="w-12 h-px bg-brand-gold/30"></span>
+                    <span class="text-[10px] font-mono text-slate-500 uppercase">Event Production</span>
+                </div>
+                <h1 class="text-6xl md:text-9xl font-extrabold leading-[0.85] mb-8 tracking-tighter uppercase">
+                    Halo, Saya <br><span class="text-brand-gold italic">Hanif</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 max-w-lg mb-12 leading-relaxed font-light">
+                    Senior Event Production & Creative Operations Manager. Hibrida dari arsitek infrastruktur penyiaran dan pemimpin operasional teknis.
+                </p>
+                <div class="flex flex-wrap gap-6 font-mono text-xs">
+                    <a href="#projects" class="px-8 py-5 bg-brand-gold text-brand-black font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]">Explore_Data</a>
+                    <a href="#contact" class="px-8 py-5 border border-white/10 font-bold uppercase tracking-widest hover:bg-brand-gold hover:text-brand-black transition-all">Establish_Link</a>
+                </div>
+            </div>
+
+            <div class="relative reveal active" style="transition-delay: 0.3s;">
+                <div class="relative w-full aspect-square max-w-md mx-auto">
+                    <div class="absolute inset-0 border border-brand-gold/20 animate-[spin_10s_linear_infinite] rounded-full"></div>
+                    <div class="absolute inset-4 border border-brand-gold/10 animate-[spin_15s_linear_infinite_reverse] rounded-full"></div>
+                    <div class="relative w-full h-full rounded-2xl overflow-hidden border-2 border-brand-gold/20 p-2 bg-brand-black shadow-2xl group text-center">
+                        <!-- Profil Hanif -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" 
+                             alt="Hanif Saifudin" 
+                             class="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 font-mono text-left">
+                            <p class="text-[9px] text-brand-gold tracking-[0.3em] uppercase italic">System_Active</p>
+                            <p class="text-xl font-bold uppercase tracking-tighter">HANIF_SAIFUDIN</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#about" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+
+      <!-- WHY HIRE ME SECTION -->
+    <section id="why-hire" class="bg-[#0d0d0d]">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="mb-20 reveal">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">02_VALUE_PROPOSITION</h2>
+                <h3 class="text-5xl font-extrabold uppercase tracking-tighter italic">Why Hire Me?</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Value 1 -->
+                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal">
+                    <p class="text-brand-gold font-mono text-xl mb-4">01.</p>
+                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">End-to-End Technical Mastery</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-light">Bukan sekadar konseptor. Saya menguasai eksekusi hardware dan software secara langsung—mulai dari arsitektur jaringan (Mikrotik, NDI, Fiber Optic) hingga rekayasa visual panggung (Resolume, LED Mapping).</p>
+                </div>
+                <!-- Value 2 -->
+                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.1s;">
+                    <p class="text-brand-gold font-mono text-xl mb-4">02.</p>
+                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Gov Procurement & E-Katalog</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-light">Sangat memahami alur birokrasi, regulasi pengadaan barang/jasa, dan prosedur E-Katalog LKPP. Memastikan eksekusi vendor transparan, aman, dan 100% comply dengan aturan audit.</p>
+                </div>
+                <!-- Value 3 -->
+                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.2s;">
+                    <p class="text-brand-gold font-mono text-xl mb-4">03.</p>
+                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Massive National Vendor Network</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-light">Didukung oleh akses langsung ke jejaring lebih dari 980 pekerja event serta vendor strategis di seluruh Indonesia. Memberikan fleksibilitas luar biasa untuk solusi alat secara instan.</p>
+                </div>
+                <!-- Value 4 -->
+                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.3s;">
+                    <p class="text-brand-gold font-mono text-xl mb-4">04.</p>
+                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Zero-Downtime Crisis Mitigation</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed font-light">Teruji menangani live production bertekanan tinggi untuk VVIP. Memiliki insting Disaster Recovery dengan rekor pemulihan kegagalan sistem panggung di bawah 5 detik.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#expertise" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+
+    <!-- CORE EXPERTISE SECTION -->
+    <section id="expertise" class="relative">
+        <div class="blur-blob bottom-0 right-0 opacity-30"></div>
+        <div class="container mx-auto px-6 max-w-7xl text-center md:text-left">
+            <div class="mb-20 reveal">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">03_SPECIALIZATIONS</h2>
+                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Core Expertise</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 font-mono">
+                <!-- Exp 1 -->
+                <div class="space-y-6 reveal">
+                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
+                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Live Production & MICE</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Mengorkestrasi sistem multimedia kompleks (LED Visual, VJ Resolume, Multicam) untuk puluhan konser artis nasional hingga touring MICE skala provinsi.</p>
+                </div>
+                <!-- Exp 2 -->
+                <div class="space-y-6 reveal" style="transition-delay: 0.1s;">
+                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
+                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Broadcast-to-Commerce</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Membawa standar kualitas TV Nasional (noise-free, zero-delay) ke dalam ekosistem Live Commerce interaktif dengan kepatuhan brand identitas yang ketat.</p>
+                </div>
+                <!-- Exp 3 -->
+                <div class="space-y-6 reveal" style="transition-delay: 0.2s;">
+                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
+                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Tactical Crisis Handling</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">Insting komando lapangan yang tegas dan presisi untuk agenda VVIP Pemerintah dan Polri, bahkan untuk perubahan skenario mendadak di H-1.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#experience" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+
+    <!-- EXPERIENCE SECTION (PARQ STYLE) -->
+    <section id="experience" class="bg-brand-black">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="mb-20 reveal">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">04_OPERATIONAL_TIMELINE</h2>
+                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Career Evolution</h3>
+            </div>
+
+            <div class="space-y-16 md:space-y-24">
+                <!-- Career 1 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
+                    <div class="lg:col-span-3">
+                        <p class="text-brand-gold font-mono text-sm mb-2">2021 — 2025</p>
+                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Head of Production & Technical Operations</h4>
+                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">CV. Dua Arah Media Nusantara</p>
+                    </div>
+                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
+                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Proses manual dalam monitoring aset, timeline, dan KPI tim yang rawan kesalahan.</p>
+                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Merancang dan mengimplementasikan Custom CRM (Laravel) untuk kontrol inventaris & timeline real-time.</p>
+                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Memangkas birokrasi administrasi vendor dan menjaga cashflow proyek tetap sehat.</p>
+                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Efisiensi biaya produksi rata-rata 20-30% per event tanpa mengurangi kualitas teknis.</p>
+                    </div>
+                </div>
+
+                <!-- Career 2 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
+                    <div class="lg:col-span-3">
+                        <p class="text-brand-gold font-mono text-sm mb-2">2017 — 2021</p>
+                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Lead Multimedia Coordinator</h4>
+                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">CV. LDR Production</p>
+                    </div>
+                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
+                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Risiko sinkronisasi audio-visual yang gagal pada setup panggung stadion.</p>
+                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Mengomandoi operasional lapangan dan manajemen cabling FOH sesuai standar K3.</p>
+                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Memastikan operasional multimedia zero-delay selama masa event.</p>
+                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Koordinasi 5-15 kru teknis dengan presisi sinkronisasi audio-visual tinggi.</p>
+                    </div>
+                </div>
+
+                <!-- Career 3 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
+                    <div class="lg:col-span-3">
+                        <p class="text-brand-gold font-mono text-sm mb-2">2010 — 2018</p>
+                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Video Journalist & Producer</h4>
+                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">Berita Satu TV & Jombang TV</p>
+                    </div>
+                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
+                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Kebutuhan visual storytelling tajam dalam kondisi lapangan dinamis.</p>
+                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Bertanggung jawab penuh atas konsep, produksi, dan eksekusi 3 program unggulan.</p>
+                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Menjaga standar audio-visual prima sesuai penyiaran nasional (National TV Quality).</p>
+                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Produksi output rutin 2 video berita/minggu dan live streaming harian.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#projects" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+    <!-- SELECTED PROJECTS SECTION -->
+    <section id="projects" class="relative">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="mb-16 reveal text-center md:text-left">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">05_KEY_PROJECTS</h2>
+                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Selected Projects</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" onclick="openModal('prj-1')">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1475721027785-f74dea327912?q=80&w=800&auto=format&fit=crop" alt="Debat KPU" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2024</div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-bold uppercase italic mb-4">Debat Publik KPU Jombang</h4>
+                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Produksi All-In (Konsep, Teknis, 10+ Vendor) dengan manajemen krisis talent utama H-5 Jam.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" style="transition-delay: 0.1s;" onclick="openModal('prj-2')">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1540575861501-7ad0582373f3?q=80&w=800&auto=format&fit=crop" alt="GPR Academy" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2022</div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-bold uppercase italic mb-4">East Java GPR Academy</h4>
+                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Penanganan acara VVIP dengan skema disaster recovery software visual < 5 detik.</p>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" style="transition-delay: 0.2s;" onclick="openModal('prj-3')">
+                    <div class="aspect-video relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop" alt="LED Matrix" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2021</div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-bold uppercase italic mb-4">Stadium LED Matrix 172m²</h4>
+                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Visual engineering seluas 172m² di Stadion Maguwoharjo dengan infrastruktur Fiber Optic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#skills" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills" class="bg-[#0d0d0d]">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <div class="mb-20 reveal text-center md:text-left">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">06_COMPETENCIES</h2>
+                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Skill Set Matrix</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <!-- Hard Skills -->
+                <div class="reveal">
+                    <h4 class="text-xs font-bold text-brand-gold font-mono uppercase tracking-widest mb-10 border-b border-white/10 pb-4">Hard_Tech_Skills</h4>
+                    <div class="flex flex-wrap gap-3 font-mono text-[10px]">
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Mikrotik_Networking</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">NDI_Architecture</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Fiber_Optic_Broadcasting</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">vMix_Streaming_Ops</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Resolume_Arena_VJ</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Novastar_Visual_Eng</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Laravel_CRM_Dev</span>
+                    </div>
+                </div>
+                <!-- Soft Skills -->
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <h4 class="text-xs font-bold text-brand-gold font-mono uppercase tracking-widest mb-10 border-b border-white/10 pb-4">Soft_Leadership_Skills</h4>
+                    <div class="flex flex-wrap gap-3 font-mono text-[10px]">
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Strategic_Leadership</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Crisis_Management_Planning</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Conflict_Resolution</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Agile_Procurement_Strategy</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Stakeholder_Management</span>
+                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Workflow_Optimization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Arrow Down -->
+        <a href="#contact" class="nav-arrow animate-bounce">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
+        </a>
+    </section>
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="relative overflow-hidden">
+        <div class="parallax-bg" style="background: radial-gradient(circle at 10% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);"></div>
+        <div class="container mx-auto px-6 max-w-7xl text-center w-full">
+            <div class="reveal">
+                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-6">07_COMMUNICATION_LINK</h2>
+                <h3 class="text-6xl md:text-8xl font-extrabold uppercase mb-12 italic tracking-tighter">Ready to Deploy.</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto font-mono text-xs mb-10 reveal">
+                <a href="mailto:hanifjombang@gmail.com" class="p-8 border border-white/5 bg-white/2 hover:bg-brand-gold hover:text-brand-black transition-all flex flex-col items-center group">
+                    <span class="text-slate-500 mb-2 uppercase group-hover:text-brand-black">Email_Secure</span>
+                    <span class="text-xl font-bold italic">hanifjombang@gmail.com</span>
+                </a>
+                <a href="https://linkedin.com/in/hanifjbg" target="_blank" class="p-8 border border-white/5 bg-white/2 hover:bg-brand-gold hover:text-brand-black transition-all flex flex-col items-center group">
+                    <span class="text-slate-500 mb-2 uppercase group-hover:text-brand-black">LinkedIn_ID</span>
+                    <span class="text-xl font-bold italic">linkedin.com/in/hanifjbg</span>
+                </a>
+            </div>
+
+            <div class="reveal" style="transition-delay: 0.3s;">
+                <p class="text-slate-500 font-mono text-[9px] uppercase tracking-[0.6em] mb-4">> [INFO] Location: Jombang, East Java (Willing to Relocate)</p>
+                <div class="flex justify-center space-x-1">
+                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce"></span>
+                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 border-t border-white/5 text-center font-mono text-[9px] text-slate-600 uppercase tracking-widest bg-brand-black w-full">
+        <p>© 2026 Hanif Saifudin // Broadcast Engineering & Event Ops</p>
+    </footer>
+
+    <!-- MODALS -->
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-brand-black/98 backdrop-blur-2xl transition-all">
+        <div class="relative w-full max-w-4xl bg-brand-black border border-white/10 p-8 md:p-16 max-h-[90vh] overflow-y-auto shadow-[0_0_100px_rgba(245,158,11,0.1)]">
+            <button onclick="closeModal('project-modal')" class="absolute top-6 right-6 text-brand-gold hover:text-white transition-colors">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"></path></svg>
+            </button>
+            <div id="modal-content" class="font-mono text-xs md:text-sm">
+                <!-- Dynamic Content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-brand-black/98 backdrop-blur-2xl transition-all">
+        <button onclick="closeModal('gallery-modal')" class="absolute top-6 right-6 text-brand-gold hover:text-white transition-colors z-[110]">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"></path></svg>
+        </button>
+        <img id="modal-img" src="" alt="Gallery Preview" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_0_100px_rgba(245,158,11,0.1)] relative z-[105]">
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Database Proyek (PARQ)
+        const projectData = {
+            'prj-1': {
+                title: 'Debat Publik KPU Jombang',
+                year: '2024',
+                role: 'Project Director & Show Director',
+                p: 'Pembatalan mendadak Presenter Utama H-5 jam sebelum Live broadcast nasional.',
+                a: 'Aktivasi cepat jaringan talenta profesional lokal dan re-briefing teknis instan.',
+                r: 'Acara berjalan mulus tanpa delay dengan integrasi 10+ vendor strategis.',
+                q: 'Budget management IDR 200 Juta untuk produksi All-In.'
+            },
+            'prj-2': {
+                title: 'East Java GPR Academy',
+                year: '2022',
+                role: 'Technical Lead & Disaster Recovery',
+                p: 'Software visual (Resolume) crash fatal di tengah sambutan VVIP Gubernur.',
+                a: 'Eksekusi redundancy scheme (backup laptop & hardware switcher) yang disiapkan H-1.',
+                r: 'Visual panggung pulih seketika tanpa disadari oleh audiens.',
+                q: 'Disaster recovery time diselesaikan dalam waktu < 5 detik.'
+            },
+            'prj-3': {
+                title: 'Stadium LED Matrix 172m²',
+                year: '2021',
+                role: 'Head of LED & Visual Engineering',
+                p: 'Malfungsi genset eksternal membakar 20 unit Power Supply LED panggung utama.',
+                a: 'Penggantian komponen instan menggunakan stok cadangan on-site sesuai SOP mitigasi.',
+                r: 'Visual panggung normal kembali sebelum segmen utama dimulai.',
+                q: 'Zero downtime visual sepanjang konser dengan layar 172m² Fiber Optic.'
+            }
+        };
+
+        // Buka Project Modal
+        function openModal(id) {
+            const data = projectData[id];
+            const content = `
+                <div class="text-brand-gold mb-8 uppercase tracking-[0.4em] text-[9px] border-b border-brand-gold/20 pb-4">Project_Report_Log_${data.year}</div>
+                <h3 class="text-4xl font-extrabold mb-2 uppercase tracking-tighter text-white italic">${data.title}</h3>
+                <p class="text-slate-500 mb-12 uppercase text-[10px] tracking-widest">${data.role}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 leading-relaxed">
+                    <div class="space-y-6">
+                        <p class="text-slate-400 font-sans">Proyek VVIP yang membutuhkan ketelitian teknis tinggi dan koordinasi kru lintas fungsi di bawah tekanan durasi live.</p>
+                        <div class="bg-brand-gold/10 p-6 border-l-2 border-brand-gold">
+                             <p class="text-brand-gold font-bold mb-2 uppercase text-[9px] tracking-widest">Key_Metric_Quantifiable:</p>
+                             <p class="text-lg text-white font-bold tracking-tighter italic">${data.q}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6 bg-white/2 p-8 border border-white/5 rounded-xl text-xs md:text-sm">
+                        <p><strong class="text-brand-gold">[P] CHALLENGE:</strong><br>${data.p}</p>
+                        <p><strong class="text-brand-gold">[A] ACTION:</strong><br>${data.a}</p>
+                        <p><strong class="text-brand-gold">[R] RESULT:</strong><br>${data.r}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-content').innerHTML = content;
+            document.getElementById('project-modal').style.display = 'flex';
+            document.body.classList.add('modal-active');
+        }
+
+        // Buka Gallery Modal
+        function openGalleryModal(src) {
+            document.getElementById('modal-img').src = src;
+            document.getElementById('gallery-modal').style.display = 'flex';
+            document.body.classList.add('modal-active');
+        }
+
+        // Tutup semua Modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.classList.remove('modal-active');
+        }
+
+        // Event Scroll untuk Parallax & Back to Top
+        window.addEventListener('scroll', () => {
+            // Back to top button logic
+            const btt = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                btt.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                btt.classList.remove('opacity-100', 'translate-y-0');
+            }
+            
+            // Navbar blur logic
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) nav.classList.add('py-3', 'bg-brand-black/90');
+            else nav.classList.remove('py-3', 'bg-brand-black/90');
+            
+            // Parallax effect logic
+            const parallaxBgs = document.querySelectorAll('.parallax-bg');
+            let scrollY = window.pageYOffset;
+            parallaxBgs.forEach(bg => {
+                let speed = 0.4;
+                bg.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+
+        // Trigger Back to Top
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+            document.getElementById('mobile-menu').classList.toggle('flex');
+        }
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Intersection Observer (Efek Fade in text/card)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+    </script>
+</body>
+</html>
+
+
+  
+  
