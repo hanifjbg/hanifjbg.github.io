@@ -3,582 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hanif Saifudin | Event Production & Tech Ops Manager</title>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <title>Hanif Saifudin | Senior Event Production & Tech Ops</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700;1,900&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'], },
                     colors: {
-                        brand: {
-                            black: '#0a0a0a',
-                            gold: '#f59e0b', // Amber 500
-                            goldDark: '#d97706', // Amber 600
-                            slate: '#1e293b',
-                        }
+                        brand: { black: '#0a0a0a', dark: '#141414', gold: '#f59e0b', goldLight: '#fbbf24', goldDark: '#d97706', }
                     }
                 }
             }
         }
     </script>
+
     <style>
-        /* Parallax & Animation Base */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* Custom Animations yang Lebih Atraktif */
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); opacity: 0.8; }
+            33% { transform: translate(40px, -60px) scale(1.2); opacity: 0.5; }
+            66% { transform: translate(-30px, 30px) scale(0.8); opacity: 0.9; }
+            100% { transform: translate(0px, 0px) scale(1); opacity: 0.8; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes spin-slow { 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse-slow { 100% { transform: rotate(-360deg); } }
+        @keyframes pan-bg { 0% { background-position: 0% 0%; } 100% { background-position: 100px 100px; } }
         
-        .parallax-bg {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 120%;
-            z-index: -1;
-            pointer-events: none;
-            transition: transform 0.1s ease-out;
+        .animate-blob { animation: blob 10s infinite ease-in-out; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-blink { animation: blink 1s step-end infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-spin-reverse { animation: spin-reverse-slow 25s linear infinite; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        
+        /* Gold Tech Grid Background - Sekarang Bergerak! */
+        .bg-grid-tech {
+            background-size: 50px 50px;
+            background-image: 
+              linear-gradient(to right, rgba(245, 158, 11, 0.07) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(245, 158, 11, 0.07) 1px, transparent 1px);
+            animation: pan-bg 20s linear infinite;
         }
-
-        .blur-blob {
-            position: absolute;
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-            filter: blur(60px);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .modal-active { overflow: hidden; }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 10px; }
 
-        /* Section Clear Break & Full Screen */
-        section { position: relative; overflow: hidden; border-bottom: 1px solid rgba(245, 158, 11, 0.1); min-height: 100vh; display: flex; align-items: center; }
-        
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            20% { transform: translate(-2px, 2px) }
-            40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) }
-            80% { transform: translate(2px, -2px) }
-            100% { transform: translate(0) }
-        }
-        .glitch-hover:hover { animation: glitch 0.3s linear infinite; }
-
-        /* Arrow styling */
-        .nav-arrow {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #f59e0b;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-        .nav-arrow:hover { color: #ffffff; }
+        /* Reveal Animation Classes */
+        .reveal-element { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-element.active { opacity: 1; transform: translateY(0) scale(1); }
+        body.modal-open { overflow: hidden; }
     </style>
 </head>
-<body class="bg-brand-black text-slate-100 font-sans selection:bg-brand-gold selection:text-brand-black">
+<body class="bg-brand-black text-slate-100 font-sans selection:bg-brand-gold selection:text-brand-black relative">
 
-    <!-- FLOATING BACK TO TOP -->
-    <button id="backToTop" class="fixed bottom-8 right-8 z-[60] p-3 bg-brand-gold text-brand-black rounded-full shadow-2xl opacity-0 translate-y-10 transition-all duration-500 hover:scale-110">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-    </button>
-
-    <!-- NAVBAR -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 border-b border-white/5 backdrop-blur-xl transition-all duration-300">
-        <div class="container mx-auto px-6 py-5 flex justify-between items-center max-w-7xl font-mono">
-            <div class="flex items-center space-x-3">
-                <div class="w-2 h-2 bg-brand-gold rounded-full animate-pulse shadow-[0_0_10px_#f59e0b]"></div>
-                <a href="#" class="text-sm font-bold tracking-[0.2em] uppercase italic">HANIF_SAIFUDIN.OPS</a>
-            </div>
-            
-            <div class="hidden md:flex space-x-8 items-center text-[10px] font-bold uppercase tracking-widest">
-                <a href="#about" class="hover:text-brand-gold transition-colors">01_ABOUT</a>
-                <a href="#why-hire" class="hover:text-brand-gold transition-colors">02_VALUE</a>
-                <a href="#experience" class="hover:text-brand-gold transition-colors">03_TIMELINE</a>
-                <a href="#projects" class="hover:text-brand-gold transition-colors">04_PROJECTS</a>
-                <a href="#contact" class="px-4 py-2 bg-brand-gold text-brand-black rounded hover:bg-white transition-all">05_CONNECT</a>
-            </div>
-            
-            <button id="mobile-menu-btn" class="md:hidden text-brand-gold">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="2"></path></svg>
-            </button>
-        </div>
-    </nav>
-
-    <!-- MOBILE MENU -->
-    <div id="mobile-menu" class="fixed inset-0 z-[100] bg-brand-black hidden flex-col items-center justify-center space-y-8 font-mono text-xl uppercase tracking-widest">
-        <button onclick="toggleMobileMenu()" class="absolute top-8 right-8 text-brand-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2"></path></svg></button>
-        <a href="#about" onclick="toggleMobileMenu()">01_ABOUT</a>
-        <a href="#why-hire" onclick="toggleMobileMenu()">02_VALUE</a>
-        <a href="#experience" onclick="toggleMobileMenu()">03_TIMELINE</a>
-        <a href="#projects" onclick="toggleMobileMenu()">04_PROJECTS</a>
-        <a href="#contact" onclick="toggleMobileMenu()">05_CONNECT</a>
+    <div class="fixed inset-0 w-full h-full bg-grid-tech pointer-events-none z-0">
+        <div class="absolute top-0 left-1/4 w-[40rem] h-[40rem] bg-brand-gold/10 rounded-full blur-[120px] animate-blob mix-blend-screen"></div>
+        <div class="absolute top-1/4 right-1/4 w-[35rem] h-[35rem] bg-orange-600/10 rounded-full blur-[120px] animate-blob animation-delay-2000 mix-blend-screen"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-[45rem] h-[45rem] bg-yellow-700/10 rounded-full blur-[120px] animate-blob animation-delay-4000 mix-blend-screen"></div>
+        <div class="absolute top-32 left-10 text-brand-gold/10 text-4xl font-black font-mono animate-float pointer-events-none">&lt;SYS/&gt;</div>
+        <div class="absolute bottom-32 right-20 text-orange-500/10 text-6xl font-black font-mono animate-float animation-delay-2000 pointer-events-none">{Ops}</div>
     </div>
 
-    <!-- HERO SECTION -->
-    <section id="hero" class="relative">
-        <div class="parallax-bg" style="background: radial-gradient(circle at 70% 30%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);"></div>
-        <div class="container mx-auto px-6 max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div class="reveal active">
-                <div class="flex items-center space-x-3 mb-6">
-                    <span class="px-3 py-1 bg-brand-gold/10 border border-brand-gold/30 rounded text-brand-gold font-mono text-[10px] uppercase tracking-widest">Portofolio / 2026</span>
-                    <span class="w-12 h-px bg-brand-gold/30"></span>
-                    <span class="text-[10px] font-mono text-slate-500 uppercase">Event Production</span>
-                </div>
-                <h1 class="text-6xl md:text-9xl font-extrabold leading-[0.85] mb-8 tracking-tighter uppercase">
-                    Halo, Saya <br><span class="text-brand-gold italic">Hanif</span>
-                </h1>
-                <p class="text-lg md:text-xl text-slate-400 max-w-lg mb-12 leading-relaxed font-light">
-                    Senior Event Production & Creative Operations Manager. Hibrida dari arsitek infrastruktur penyiaran dan pemimpin operasional teknis.
-                </p>
-                <div class="flex flex-wrap gap-6 font-mono text-xs">
-                    <a href="#projects" class="px-8 py-5 bg-brand-gold text-brand-black font-bold uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]">Explore_Data</a>
-                    <a href="#contact" class="px-8 py-5 border border-white/10 font-bold uppercase tracking-widest hover:bg-brand-gold hover:text-brand-black transition-all">Establish_Link</a>
-                </div>
+    <nav id="navbar" class="fixed top-0 w-full z-40 transition-all duration-500 py-6 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#hero" class="font-bold text-lg md:text-xl tracking-widest flex items-center gap-3 cursor-pointer group font-mono uppercase italic">
+                <div class="w-2 h-2 bg-brand-gold rounded-full animate-pulse shadow-[0_0_15px_#f59e0b]"></div>
+                <span class="text-white group-hover:text-brand-goldLight transition-colors">HANIF_SAIFUDIN<span class="text-brand-gold">.OPS</span></span>
+            </a>
+            <div class="hidden lg:flex gap-8 text-xs font-bold font-mono tracking-widest text-slate-400">
+                <a href="#hero" class="hover:text-brand-gold hover:tracking-[0.2em] transition-all duration-300">01_ABOUT</a>
+                <a href="#value" class="hover:text-brand-gold hover:tracking-[0.2em] transition-all duration-300">02_VALUE</a>
+                <a href="#timeline" class="hover:text-brand-gold hover:tracking-[0.2em] transition-all duration-300">03_TIMELINE</a>
+                <a href="#projects" class="hover:text-brand-gold hover:tracking-[0.2em] transition-all duration-300">04_WORKS</a>
+                <a href="#gallery" class="hover:text-brand-gold hover:tracking-[0.2em] transition-all duration-300">05_GALLERY</a>
             </div>
+            <button id="mobile-menu-btn" class="lg:hidden text-brand-gold hover:text-white transition-colors p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </div>
+    </nav>    <div id="mobile-menu" class="fixed inset-0 bg-brand-black/98 backdrop-blur-xl z-50 transition-all duration-500 ease-in-out opacity-0 pointer-events-none flex flex-col items-center justify-center gap-8 text-xl font-bold font-mono tracking-widest uppercase">
+        <button id="close-menu-btn" class="absolute top-6 right-6 text-brand-gold p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+        <a href="#hero" class="mobile-link hover:text-brand-gold transition-colors">01_ABOUT</a>
+        <a href="#value" class="mobile-link hover:text-brand-gold transition-colors">02_VALUE</a>
+        <a href="#timeline" class="mobile-link hover:text-brand-gold transition-colors">03_TIMELINE</a>
+        <a href="#projects" class="mobile-link hover:text-brand-gold transition-colors">04_WORKS</a>
+        <a href="#gallery" class="mobile-link hover:text-brand-gold transition-colors">05_GALLERY</a>
+        <a href="#contact" class="mobile-link hover:text-brand-gold transition-colors">06_CONNECT</a>
+        <div class="absolute bottom-10 text-xs text-brand-gold/50">System.Active == true;</div>
+    </div>
 
-            <div class="relative reveal active" style="transition-delay: 0.3s;">
-                <div class="relative w-full aspect-square max-w-md mx-auto">
-                    <div class="absolute inset-0 border border-brand-gold/20 animate-[spin_10s_linear_infinite] rounded-full"></div>
-                    <div class="absolute inset-4 border border-brand-gold/10 animate-[spin_15s_linear_infinite_reverse] rounded-full"></div>
-                    <div class="relative w-full h-full rounded-2xl overflow-hidden border-2 border-brand-gold/20 p-2 bg-brand-black shadow-2xl group text-center">
-                        <!-- Profil Hanif -->
-                        <img src="https://s6.imgcdn.dev/YGsCIH.png" 
-                             alt="Hanif Saifudin" 
-                             class="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 font-mono text-left">
-                            <p class="text-[9px] text-brand-gold tracking-[0.3em] uppercase italic">System_Active</p>
-                            <p class="text-xl font-bold uppercase tracking-tighter">HANIF_SAIFUDIN</p>
+    <main class="relative z-10 w-full overflow-hidden">
+        
+        <section id="hero" class="min-h-screen w-full flex items-center justify-center py-24 relative">
+            <div class="px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
+                
+                <div class="reveal-element order-2 lg:order-1 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 mb-8 rounded-sm border border-brand-gold/30 bg-brand-gold/10 text-brand-gold text-[10px] font-bold font-mono uppercase tracking-widest backdrop-blur-md">
+                        <span>Portofolio / 2026</span>
+                        <span class="w-8 h-px bg-brand-gold/50"></span>
+                        <span class="text-slate-300">Event Production</span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tighter uppercase leading-[0.9]">
+                        Halo, Saya <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-goldLight via-brand-gold to-orange-500 italic relative pr-8">
+                            Hanif<span class="absolute -right-2 top-0 text-brand-gold animate-blink font-mono">_</span>
+                        </span>
+                    </h1>
+                    
+                    <p class="text-lg text-slate-400 mb-10 max-w-lg mx-auto lg:mx-0 font-light leading-relaxed">
+                        Senior Event Production & Creative Operations Manager. Hibrida dari arsitek infrastruktur penyiaran dan pemimpin operasional teknis.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 font-mono text-xs justify-center lg:justify-start">
+                        <a href="#projects" class="px-8 py-4 bg-brand-gold text-brand-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(245,158,11,0.4)] flex items-center justify-center gap-2 group">
+                            <svg class="group-hover:translate-x-1 transition-transform" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg> Explore_Data
+                        </a>
+                        <a href="#contact" class="px-8 py-4 border border-white/20 text-white font-bold uppercase tracking-widest hover:bg-brand-gold hover:text-brand-black hover:border-brand-gold transition-all duration-300 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg> Establish_Link
+                        </a>
+                    </div>
+                </div>
+
+                <div class="reveal-element order-1 lg:order-2 flex justify-center lg:justify-end" style="transition-delay: 0.2s;">
+                    <div class="relative w-72 h-72 md:w-96 md:h-96 max-w-full group">
+                        <div class="absolute inset-0 border-2 border-dashed border-brand-gold/30 rounded-full animate-spin-slow group-hover:border-brand-gold/60 transition-colors"></div>
+                        <div class="absolute inset-4 border border-brand-gold/20 rounded-full animate-spin-reverse group-hover:border-brand-gold/50 transition-colors"></div>
+                        
+                        <div class="relative w-full h-full rounded-full overflow-hidden border-4 border-brand-black shadow-[0_0_40px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_80px_rgba(245,158,11,0.4)] transition-all duration-500 z-10 bg-[#111]">
+                            <img src="https://s6.imgcdn.dev/YGsCIH.png" alt="Hanif Saifudin" class="w-full h-full object-cover object-center grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-110 group-hover:scale-105 transition-all duration-700" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-transparent to-transparent opacity-80"></div>
+                            
+                            <div class="absolute bottom-8 left-0 w-full text-center font-mono transition-transform duration-500 group-hover:-translate-y-2">
+                                <p class="text-[10px] text-brand-gold tracking-[0.3em] uppercase italic mb-1 animate-pulse">System_Active</p>
+                                <p class="text-xl font-bold uppercase tracking-tighter text-white">HANIF_SAIFUDIN</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#about" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
+        </section>
 
-      <!-- WHY HIRE ME SECTION -->
-    <section id="why-hire" class="bg-[#0d0d0d]">
-        <div class="container mx-auto px-6 max-w-7xl">
-            <div class="mb-20 reveal">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">02_VALUE_PROPOSITION</h2>
-                <h3 class="text-5xl font-extrabold uppercase tracking-tighter italic">Why Hire Me?</h3>
-            </div>
+                <section id="value" class="min-h-screen w-full flex flex-col justify-center py-24 px-6 bg-[#0f0f0f] border-t border-brand-gold/10 relative">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="mb-16 reveal-element">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">02_VALUE_PROPOSITION</h2>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter italic">Why Hire Me?</h3>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Value 1 -->
-                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal">
-                    <p class="text-brand-gold font-mono text-xl mb-4">01.</p>
-                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">End-to-End Technical Mastery</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-light">Bukan sekadar konseptor. Saya menguasai eksekusi hardware dan software secara langsung—mulai dari arsitektur jaringan (Mikrotik, NDI, Fiber Optic) hingga rekayasa visual panggung (Resolume, LED Mapping).</p>
-                </div>
-                <!-- Value 2 -->
-                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.1s;">
-                    <p class="text-brand-gold font-mono text-xl mb-4">02.</p>
-                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Gov Procurement & E-Katalog</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-light">Sangat memahami alur birokrasi, regulasi pengadaan barang/jasa, dan prosedur E-Katalog LKPP. Memastikan eksekusi vendor transparan, aman, dan 100% comply dengan aturan audit.</p>
-                </div>
-                <!-- Value 3 -->
-                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.2s;">
-                    <p class="text-brand-gold font-mono text-xl mb-4">03.</p>
-                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Massive National Vendor Network</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-light">Didukung oleh akses langsung ke jejaring lebih dari 980 pekerja event serta vendor strategis di seluruh Indonesia. Memberikan fleksibilitas luar biasa untuk solusi alat secara instan.</p>
-                </div>
-                <!-- Value 4 -->
-                <div class="p-10 border border-white/5 bg-white/2 hover:border-brand-gold/50 transition-all group reveal" style="transition-delay: 0.3s;">
-                    <p class="text-brand-gold font-mono text-xl mb-4">04.</p>
-                    <h4 class="text-2xl font-bold text-white mb-6 uppercase tracking-tight">Zero-Downtime Crisis Mitigation</h4>
-                    <p class="text-slate-500 text-sm leading-relaxed font-light">Teruji menangani live production bertekanan tinggi untuk VVIP. Memiliki insting Disaster Recovery dengan rekor pemulihan kegagalan sistem panggung di bawah 5 detik.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#expertise" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
-
-    <!-- CORE EXPERTISE SECTION -->
-    <section id="expertise" class="relative">
-        <div class="blur-blob bottom-0 right-0 opacity-30"></div>
-        <div class="container mx-auto px-6 max-w-7xl text-center md:text-left">
-            <div class="mb-20 reveal">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">03_SPECIALIZATIONS</h2>
-                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Core Expertise</h3>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 font-mono">
-                <!-- Exp 1 -->
-                <div class="space-y-6 reveal">
-                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
-                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Live Production & MICE</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Mengorkestrasi sistem multimedia kompleks (LED Visual, VJ Resolume, Multicam) untuk puluhan konser artis nasional hingga touring MICE skala provinsi.</p>
-                </div>
-                <!-- Exp 2 -->
-                <div class="space-y-6 reveal" style="transition-delay: 0.1s;">
-                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
-                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Broadcast-to-Commerce</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Membawa standar kualitas TV Nasional (noise-free, zero-delay) ke dalam ekosistem Live Commerce interaktif dengan kepatuhan brand identitas yang ketat.</p>
-                </div>
-                <!-- Exp 3 -->
-                <div class="space-y-6 reveal" style="transition-delay: 0.2s;">
-                    <div class="h-px w-full bg-brand-gold/30 mb-8"></div>
-                    <h4 class="text-lg font-bold text-white uppercase tracking-tighter underline underline-offset-8 decoration-brand-gold">Tactical Crisis Handling</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Insting komando lapangan yang tegas dan presisi untuk agenda VVIP Pemerintah dan Polri, bahkan untuk perubahan skenario mendadak di H-1.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#experience" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
-
-    <!-- EXPERIENCE SECTION (PARQ STYLE) -->
-    <section id="experience" class="bg-brand-black">
-        <div class="container mx-auto px-6 max-w-7xl">
-            <div class="mb-20 reveal">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">04_OPERATIONAL_TIMELINE</h2>
-                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Career Evolution</h3>
-            </div>
-
-            <div class="space-y-16 md:space-y-24">
-                <!-- Career 1 -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
-                    <div class="lg:col-span-3">
-                        <p class="text-brand-gold font-mono text-sm mb-2">2021 — 2025</p>
-                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Head of Production & Technical Operations</h4>
-                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">CV. Dua Arah Media Nusantara</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-10 border border-white/5 bg-brand-dark rounded-sm hover:border-brand-gold/50 transition-all duration-300 group reveal-element hover:shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:-translate-y-2">
+                        <div class="flex justify-between items-start mb-6">
+                            <p class="text-brand-gold font-mono text-xl font-bold">01.</p>
+                            <svg class="text-slate-600 group-hover:text-brand-gold transition-colors" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mb-4 uppercase tracking-tight">End-to-End Technical Mastery</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Bukan sekadar konseptor. Menguasai arsitektur jaringan (Mikrotik, NDI, FO) hingga rekayasa visual panggung (Resolume, LED Mapping).</p>
                     </div>
-                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
-                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Proses manual dalam monitoring aset, timeline, dan KPI tim yang rawan kesalahan.</p>
-                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Merancang dan mengimplementasikan Custom CRM (Laravel) untuk kontrol inventaris & timeline real-time.</p>
-                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Memangkas birokrasi administrasi vendor dan menjaga cashflow proyek tetap sehat.</p>
-                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Efisiensi biaya produksi rata-rata 20-30% per event tanpa mengurangi kualitas teknis.</p>
-                    </div>
-                </div>
 
-                <!-- Career 2 -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
-                    <div class="lg:col-span-3">
-                        <p class="text-brand-gold font-mono text-sm mb-2">2017 — 2021</p>
-                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Lead Multimedia Coordinator</h4>
-                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">CV. LDR Production</p>
+                    <div class="p-10 border border-white/5 bg-brand-dark rounded-sm hover:border-brand-gold/50 transition-all duration-300 group reveal-element hover:shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:-translate-y-2" style="transition-delay: 0.1s;">
+                        <div class="flex justify-between items-start mb-6">
+                            <p class="text-brand-gold font-mono text-xl font-bold">02.</p>
+                            <svg class="text-slate-600 group-hover:text-brand-gold transition-colors" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mb-4 uppercase tracking-tight">Gov Procurement & E-Katalog</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Sangat memahami alur birokrasi dan E-Katalog LKPP. Memastikan eksekusi vendor transparan dan 100% comply aturan audit.</p>
                     </div>
-                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
-                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Risiko sinkronisasi audio-visual yang gagal pada setup panggung stadion.</p>
-                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Mengomandoi operasional lapangan dan manajemen cabling FOH sesuai standar K3.</p>
-                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Memastikan operasional multimedia zero-delay selama masa event.</p>
-                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Koordinasi 5-15 kru teknis dengan presisi sinkronisasi audio-visual tinggi.</p>
-                    </div>
-                </div>
 
-                <!-- Career 3 -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 reveal">
-                    <div class="lg:col-span-3">
-                        <p class="text-brand-gold font-mono text-sm mb-2">2010 — 2018</p>
-                        <h4 class="text-2xl font-bold uppercase tracking-tight italic">Video Journalist & Producer</h4>
-                        <p class="text-[10px] text-slate-500 font-mono mt-2 uppercase tracking-[0.2em]">Berita Satu TV & Jombang TV</p>
+                    <div class="p-10 border border-white/5 bg-brand-dark rounded-sm hover:border-brand-gold/50 transition-all duration-300 group reveal-element hover:shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:-translate-y-2" style="transition-delay: 0.2s;">
+                        <div class="flex justify-between items-start mb-6">
+                            <p class="text-brand-gold font-mono text-xl font-bold">03.</p>
+                            <svg class="text-slate-600 group-hover:text-brand-gold transition-colors" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mb-4 uppercase tracking-tight">Massive Vendor Network</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Akses ke jejaring lebih dari 980 pekerja event serta vendor strategis di seluruh Indonesia untuk solusi alat instan.</p>
                     </div>
-                    <div class="lg:col-span-9 border-l border-white/10 pl-6 md:pl-12 space-y-4 font-mono text-[11px] text-slate-400">
-                        <p><span class="text-brand-gold font-bold">[P] PROBLEM:</span> Kebutuhan visual storytelling tajam dalam kondisi lapangan dinamis.</p>
-                        <p><span class="text-brand-gold font-bold">[A] ACTION:</span> Bertanggung jawab penuh atas konsep, produksi, dan eksekusi 3 program unggulan.</p>
-                        <p><span class="text-brand-gold font-bold">[R] RESULT:</span> Menjaga standar audio-visual prima sesuai penyiaran nasional (National TV Quality).</p>
-                        <p><span class="text-brand-gold font-bold">[Q] QUANTIFIABLE:</span> Produksi output rutin 2 video berita/minggu dan live streaming harian.</p>
+
+                    <div class="p-10 border border-white/5 bg-brand-dark rounded-sm hover:border-brand-gold/50 transition-all duration-300 group reveal-element hover:shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:-translate-y-2" style="transition-delay: 0.3s;">
+                        <div class="flex justify-between items-start mb-6">
+                            <p class="text-brand-gold font-mono text-xl font-bold">04.</p>
+                            <svg class="text-slate-600 group-hover:text-brand-gold transition-colors" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                        </div>
+                        <h4 class="text-2xl font-bold text-white mb-4 uppercase tracking-tight">Zero-Downtime Crisis</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed font-light">Teruji menangani live production bertekanan tinggi untuk VVIP. Rekor pemulihan kegagalan sistem panggung di bawah 5 detik.</p>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#projects" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
-    <!-- SELECTED PROJECTS SECTION -->
-    <section id="projects" class="relative">
-        <div class="container mx-auto px-6 max-w-7xl">
-            <div class="mb-16 reveal text-center md:text-left">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">05_KEY_PROJECTS</h2>
-                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Selected Projects</h3>
-            </div>
+        </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Project 1 -->
-                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" onclick="openModal('prj-1')">
-                    <div class="aspect-video relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1475721027785-f74dea327912?q=80&w=800&auto=format&fit=crop" alt="Debat KPU" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
-                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2024</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold uppercase italic mb-4">Debat Publik KPU Jombang</h4>
-                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Produksi All-In (Konsep, Teknis, 10+ Vendor) dengan manajemen krisis talent utama H-5 Jam.</p>
-                    </div>
+        <section id="timeline" class="min-h-screen w-full flex flex-col justify-center py-24 px-6 bg-brand-black border-t border-brand-gold/10 relative">
+            <div class="max-w-5xl mx-auto w-full">
+                <div class="mb-20 reveal-element text-center md:text-left">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">03_OPERATIONAL_TIMELINE</h2>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter">Career Evolution</h3>
                 </div>
-                <!-- Project 2 -->
-                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" style="transition-delay: 0.1s;" onclick="openModal('prj-2')">
-                    <div class="aspect-video relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1540575861501-7ad0582373f3?q=80&w=800&auto=format&fit=crop" alt="GPR Academy" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
-                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2022</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold uppercase italic mb-4">East Java GPR Academy</h4>
-                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Penanganan acara VVIP dengan skema disaster recovery software visual < 5 detik.</p>
-                    </div>
-                </div>
-                <!-- Project 3 -->
-                <div class="bg-white/2 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-brand-gold transition-all reveal" style="transition-delay: 0.2s;" onclick="openModal('prj-3')">
-                    <div class="aspect-video relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop" alt="LED Matrix" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500">
-                        <div class="absolute bottom-4 left-4 bg-brand-gold text-[9px] font-mono text-brand-black px-2 py-1 font-bold">2021</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-bold uppercase italic mb-4">Stadium LED Matrix 172m²</h4>
-                        <p class="text-xs text-slate-500 font-mono line-clamp-2">Visual engineering seluas 172m² di Stadion Maguwoharjo dengan infrastruktur Fiber Optic.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#skills" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
 
-    <!-- SKILLS SECTION -->
-    <section id="skills" class="bg-[#0d0d0d]">
-        <div class="container mx-auto px-6 max-w-7xl">
-            <div class="mb-20 reveal text-center md:text-left">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">06_COMPETENCIES</h2>
-                <h3 class="text-5xl font-extrabold uppercase tracking-tighter">Skill Set Matrix</h3>
-            </div>
+                <div class="space-y-16 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-brand-gold/50 before:to-transparent">
+                    
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal-element">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-black bg-brand-gold text-brand-black shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-brand-dark p-6 rounded-sm border border-white/5 hover:border-brand-gold/50 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] group-hover:-translate-y-1">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                                <p class="text-brand-gold font-mono text-xs font-bold">2021 — 2025</p>
+                                <p class="text-[9px] text-slate-500 font-mono uppercase tracking-widest mt-1 md:mt-0">CV. Dua Arah Media Nusantara</p>
+                            </div>
+                            <h4 class="text-xl font-bold uppercase tracking-tight italic mb-4">Head of Production & Tech Ops</h4>
+                            <ul class="space-y-2 font-mono text-[11px] text-slate-400">
+                                <li><span class="text-brand-gold font-bold">[P]</span> Proses manual rawan kesalahan.</li>
+                                <li><span class="text-brand-gold font-bold">[A]</span> Develop Custom CRM (Laravel) buat inventaris.</li>
+                                <li><span class="text-brand-gold font-bold">[R]</span> Memangkas birokrasi & jaga cashflow.</li>
+                                <li><span class="text-brand-gold font-bold">[Q]</span> Efisiensi biaya 20-30% per event.</li>
+                            </ul>
+                        </div>
+                    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <!-- Hard Skills -->
-                <div class="reveal">
-                    <h4 class="text-xs font-bold text-brand-gold font-mono uppercase tracking-widest mb-10 border-b border-white/10 pb-4">Hard_Tech_Skills</h4>
-                    <div class="flex flex-wrap gap-3 font-mono text-[10px]">
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Mikrotik_Networking</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">NDI_Architecture</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Fiber_Optic_Broadcasting</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">vMix_Streaming_Ops</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Resolume_Arena_VJ</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Novastar_Visual_Eng</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Laravel_CRM_Dev</span>
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal-element" style="transition-delay: 0.1s;">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-brand-black bg-slate-800 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 relative z-10 group-hover:bg-brand-gold group-hover:text-brand-black group-hover:scale-110 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
+                        </div>
+                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-brand-dark p-6 rounded-sm border border-white/5 hover:border-brand-gold/50 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.5)] group-hover:-translate-y-1">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+                                <p class="text-brand-gold font-mono text-xs font-bold">2017 — 2021</p>
+                                <p class="text-[9px] text-slate-500 font-mono uppercase tracking-widest mt-1 md:mt-0">CV. LDR Production</p>
+                            </div>
+                            <h4 class="text-xl font-bold uppercase tracking-tight italic mb-4">Lead Multimedia Coordinator</h4>
+                            <ul class="space-y-2 font-mono text-[11px] text-slate-400">
+                                <li><span class="text-brand-gold font-bold">[P]</span> Risiko sinkronisasi A/V di stadion.</li>
+                                <li><span class="text-brand-gold font-bold">[A]</span> Komando lapangan & manajemen cabling.</li>
+                                <li><span class="text-brand-gold font-bold">[R]</span> Operasional multimedia zero-delay.</li>
+                                <li><span class="text-brand-gold font-bold">[Q]</span> Koordinasi 5-15 kru teknis presisi.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <!-- Soft Skills -->
-                <div class="reveal" style="transition-delay: 0.2s;">
-                    <h4 class="text-xs font-bold text-brand-gold font-mono uppercase tracking-widest mb-10 border-b border-white/10 pb-4">Soft_Leadership_Skills</h4>
-                    <div class="flex flex-wrap gap-3 font-mono text-[10px]">
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Strategic_Leadership</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Crisis_Management_Planning</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Conflict_Resolution</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Agile_Procurement_Strategy</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Stakeholder_Management</span>
-                        <span class="px-4 py-2 border border-white/10 bg-white/2 rounded hover:bg-brand-gold hover:text-brand-black transition-all">Workflow_Optimization</span>
+            </div>
+        </section>
+
+                <section id="projects" class="min-h-screen w-full flex flex-col justify-center py-24 px-6 lg:px-12 bg-[#0f0f0f] border-t border-brand-gold/10 relative">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="mb-16 reveal-element">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">04_KEY_PROJECTS</h2>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter">Selected <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-orange-500 italic">Modules</span>.</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="reveal-element group relative rounded-sm overflow-hidden bg-brand-dark border border-white/5 cursor-pointer hover:border-brand-gold/50 hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_rgba(245,158,11,0.3)] transition-all duration-300" onclick="openProjectModal('prj-1')">
+                        <div class="aspect-square overflow-hidden relative border-b border-white/5">
+                            <div class="absolute inset-0 bg-brand-black/50 group-hover:bg-transparent transition-all duration-500 z-10 mix-blend-multiply"></div>
+                            <img src="https://s6.imgcdn.dev/YGyt1O.jpg" alt="KPU" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transform group-hover:scale-110 transition-all duration-700"/>
+                            <div class="absolute bottom-4 left-4 z-20 bg-brand-gold text-[10px] font-mono text-brand-black px-2 py-1 font-bold shadow-lg">2024</div>
+                        </div>
+                        <div class="p-6 relative z-20 bg-brand-dark">
+                            <h4 class="text-xl font-bold uppercase italic mb-3 group-hover:text-brand-gold transition-colors line-clamp-1">Debat Publik KPU Jombang</h4>
+                            <p class="text-xs text-slate-500 font-mono line-clamp-2 mb-4">Produksi All-In (Konsep, Teknis, 10+ Vendor) dengan manajemen krisis talent utama H-5 Jam.</p>
+                        </div>
+                    </div>
+
+                    <div class="reveal-element group relative rounded-sm overflow-hidden bg-brand-dark border border-white/5 cursor-pointer hover:border-brand-gold/50 hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_rgba(245,158,11,0.3)] transition-all duration-300" style="transition-delay: 0.1s;" onclick="openProjectModal('prj-2')">
+                        <div class="aspect-square overflow-hidden relative border-b border-white/5">
+                            <div class="absolute inset-0 bg-brand-black/50 group-hover:bg-transparent transition-all duration-500 z-10 mix-blend-multiply"></div>
+                            <img src="https://s6.imgcdn.dev/YGy3hg.jpg" alt="GPR & DLA" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transform group-hover:scale-110 transition-all duration-700"/>
+                            <div class="absolute bottom-4 left-4 z-20 bg-brand-gold text-[10px] font-mono text-brand-black px-2 py-1 font-bold shadow-lg">2022</div>
+                        </div>
+                        <div class="p-6 relative z-20 bg-brand-dark">
+                            <h4 class="text-xl font-bold uppercase italic mb-3 group-hover:text-brand-gold transition-colors line-clamp-1">GPR Academy & DLA</h4>
+                            <p class="text-xs text-slate-500 font-mono line-clamp-2 mb-4">Penanganan acara VVIP dengan skema disaster recovery software visual < 5 detik.</p>
+                        </div>
+                    </div>
+
+                    <div class="reveal-element group relative rounded-sm overflow-hidden bg-brand-dark border border-white/5 cursor-pointer hover:border-brand-gold/50 hover:-translate-y-2 hover:shadow-[0_10px_40px_-15px_rgba(245,158,11,0.3)] transition-all duration-300" style="transition-delay: 0.2s;" onclick="openProjectModal('prj-3')">
+                        <div class="aspect-square overflow-hidden relative border-b border-white/5">
+                            <div class="absolute inset-0 bg-brand-black/50 group-hover:bg-transparent transition-all duration-500 z-10 mix-blend-multiply"></div>
+                            <img src="https://s6.imgcdn.dev/YGye8q.jpg" alt="Curvasudfest" class="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transform group-hover:scale-110 transition-all duration-700"/>
+                            <div class="absolute bottom-4 left-4 z-20 bg-brand-gold text-[10px] font-mono text-brand-black px-2 py-1 font-bold shadow-lg">2021</div>
+                        </div>
+                        <div class="p-6 relative z-20 bg-brand-dark">
+                            <h4 class="text-xl font-bold uppercase italic mb-3 group-hover:text-brand-gold transition-colors line-clamp-1">Curvasudfest</h4>
+                            <p class="text-xs text-slate-500 font-mono line-clamp-2 mb-4">Manajemen teknis live music festival dengan rekayasa visual panggung dinamis dan crowd safety.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Arrow Down -->
-        <a href="#contact" class="nav-arrow animate-bounce">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 14l-7 7-7-7" stroke-width="2" stroke-linecap="round"></path><path d="M12 21V3" stroke-width="2" stroke-linecap="round"></path></svg>
-        </a>
-    </section>
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="relative overflow-hidden">
-        <div class="parallax-bg" style="background: radial-gradient(circle at 10% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);"></div>
-        <div class="container mx-auto px-6 max-w-7xl text-center w-full">
-            <div class="reveal">
-                <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-6">07_COMMUNICATION_LINK</h2>
-                <h3 class="text-6xl md:text-8xl font-extrabold uppercase mb-12 italic tracking-tighter">Ready to Deploy.</h3>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto font-mono text-xs mb-10 reveal">
-                <a href="mailto:hanifjombang@gmail.com" class="p-8 border border-white/5 bg-white/2 hover:bg-brand-gold hover:text-brand-black transition-all flex flex-col items-center group">
-                    <span class="text-slate-500 mb-2 uppercase group-hover:text-brand-black">Email_Secure</span>
-                    <span class="text-xl font-bold italic">hanifjombang@gmail.com</span>
-                </a>
-                <a href="https://linkedin.com/in/hanifjbg" target="_blank" class="p-8 border border-white/5 bg-white/2 hover:bg-brand-gold hover:text-brand-black transition-all flex flex-col items-center group">
-                    <span class="text-slate-500 mb-2 uppercase group-hover:text-brand-black">LinkedIn_ID</span>
-                    <span class="text-xl font-bold italic">linkedin.com/in/hanifjbg</span>
-                </a>
-            </div>
+        </section>
 
-            <div class="reveal" style="transition-delay: 0.3s;">
-                <p class="text-slate-500 font-mono text-[9px] uppercase tracking-[0.6em] mb-4">> [INFO] Location: Jombang, East Java (Willing to Relocate)</p>
-                <div class="flex justify-center space-x-1">
-                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce"></span>
-                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
-                    <span class="w-3 h-3 bg-brand-gold rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+        <section id="gallery" class="py-24 px-6 lg:px-12 bg-brand-black border-t border-brand-gold/10 relative">
+            <div class="max-w-7xl mx-auto w-full">
+                <div class="mb-16 reveal-element text-center">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">05_VISUAL_LOGS</h2>
+                    <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter">Event <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-orange-500 italic">Gallery</span>.</h3>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 reveal-element">
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1605379399642-870262d3d051?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
+                    <div class="aspect-square overflow-hidden rounded-sm relative group cursor-pointer border border-white/5"><img src="https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?auto=format&fit=crop&w=500&q=80" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0"><div class="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity"></div></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- FOOTER -->
-    <footer class="py-12 border-t border-white/5 text-center font-mono text-[9px] text-slate-600 uppercase tracking-widest bg-brand-black w-full">
-        <p>© 2026 Hanif Saifudin // Broadcast Engineering & Event Ops</p>
+                <section id="contact" class="min-h-screen w-full flex items-center justify-center py-24 px-6 bg-[#0f0f0f] border-t border-brand-gold/10 relative">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 w-full">
+                <div class="reveal-element order-2 lg:order-1">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">06_COMPETENCIES</h2>
+                    <h3 class="text-4xl font-black uppercase tracking-tighter mb-10">Skill Matrix</h3>
+                    <div class="mb-8">
+                        <h4 class="text-xs font-bold text-brand-gold font-mono uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Hard_Tech_Skills</h4>
+                        <div class="flex flex-wrap gap-2 font-mono text-[10px]">
+                            <span class="px-3 py-1.5 border border-white/10 bg-white/5 rounded-sm hover:bg-brand-gold hover:text-brand-black transition-all">Mikrotik_Networking</span>
+                            <span class="px-3 py-1.5 border border-white/10 bg-white/5 rounded-sm hover:bg-brand-gold hover:text-brand-black transition-all">NDI_Architecture</span>
+                            <span class="px-3 py-1.5 border border-white/10 bg-white/5 rounded-sm hover:bg-brand-gold hover:text-brand-black transition-all">Fiber_Optic_Broadcast</span>
+                            <span class="px-3 py-1.5 border border-white/10 bg-white/5 rounded-sm hover:bg-brand-gold hover:text-brand-black transition-all">Resolume_Arena_VJ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal-element order-1 lg:order-2 flex flex-col justify-center text-center lg:text-left">
+                    <h2 class="text-[10px] font-bold text-brand-gold font-mono uppercase tracking-[0.4em] mb-4">07_COMMUNICATION_LINK</h2>
+                    <h3 class="text-5xl md:text-6xl font-black uppercase tracking-tighter mb-8 italic">Ready to <br/><span class="text-brand-gold">Deploy.</span></h3>
+                    
+                    <div class="flex flex-col gap-4 font-mono text-xs w-full max-w-sm mx-auto lg:mx-0">
+                        <a href="mailto:hanifjombang@gmail.com" class="p-4 border border-white/10 bg-brand-dark hover:bg-brand-gold hover:text-brand-black transition-all flex items-center gap-4 group">
+                           <svg class="text-brand-gold group-hover:text-brand-black" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                           <div class="text-left"><span class="block text-[10px] text-slate-500 group-hover:text-brand-black/70 uppercase">Email_Secure</span><span class="font-bold italic text-sm">hanifjombang@gmail.com</span></div>
+                        </a>
+                        <a href="https://github.com/hanifjbg" target="_blank" class="p-4 border border-white/10 bg-brand-dark hover:bg-brand-gold hover:text-brand-black transition-all flex items-center gap-4 group">
+                           <svg class="text-brand-gold group-hover:text-brand-black" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                           <div class="text-left"><span class="block text-[10px] text-slate-500 group-hover:text-brand-black/70 uppercase">GitHub_Repo</span><span class="font-bold italic text-sm">github.com/hanifjbg</span></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 text-center border-t border-white/5 bg-brand-black text-slate-600 text-[10px] font-mono uppercase tracking-widest relative z-10 w-full">
+        <p>System.exit(0); // © 2026 Hanif Saifudin</p>
     </footer>
+    <button id="backToTop" class="fixed bottom-8 right-8 z-40 p-3 bg-brand-gold text-brand-black rounded-full shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:scale-110 hover:bg-white transition-all duration-500 opacity-0 translate-y-10 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+    </button>
 
-    <!-- MODALS -->
-    <!-- Project Modal -->
-    <div id="project-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-brand-black/98 backdrop-blur-2xl transition-all">
-        <div class="relative w-full max-w-4xl bg-brand-black border border-white/10 p-8 md:p-16 max-h-[90vh] overflow-y-auto shadow-[0_0_100px_rgba(245,158,11,0.1)]">
-            <button onclick="closeModal('project-modal')" class="absolute top-6 right-6 text-brand-gold hover:text-white transition-colors">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"></path></svg>
-            </button>
-            <div id="modal-content" class="font-mono text-xs md:text-sm">
-                <!-- Dynamic Content injected by JS -->
+    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute inset-0 bg-brand-black/90 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="relative w-full max-w-4xl bg-brand-dark border border-brand-gold/30 rounded-sm overflow-y-auto max-h-[90vh] shadow-[0_0_50px_rgba(245,158,11,0.15)] transform scale-95 transition-transform duration-300" id="modal-box">
+            <div class="bg-brand-black px-4 py-3 flex items-center justify-between border-b border-brand-gold/20 sticky top-0 z-30">
+                <div class="flex gap-2"><button onclick="closeModal()" class="w-3 h-3 rounded-full bg-red-500"></button><div class="w-3 h-3 rounded-full bg-brand-gold"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+                <div id="modal-file-name" class="text-[10px] font-mono text-slate-500 flex items-center gap-2 uppercase tracking-widest">log.txt</div>
+                <button onclick="closeModal()" class="text-slate-500 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
             </div>
+            <div id="modal-image-container" class="w-full h-64 md:h-80 relative overflow-hidden border-b border-white/10">
+                <img id="modal-image-src" src="" alt="Project Image" class="w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark to-transparent"></div>
+            </div>
+            <div class="p-8 md:p-12 relative z-20" id="modal-dynamic-content"></div>
         </div>
     </div>
 
-    <!-- Gallery Modal -->
-    <div id="gallery-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-brand-black/98 backdrop-blur-2xl transition-all">
-        <button onclick="closeModal('gallery-modal')" class="absolute top-6 right-6 text-brand-gold hover:text-white transition-colors z-[110]">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2.5"></path></svg>
-        </button>
-        <img id="modal-img" src="" alt="Gallery Preview" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_0_100px_rgba(245,158,11,0.1)] relative z-[105]">
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Database Proyek (PARQ)
         const projectData = {
             'prj-1': {
-                title: 'Debat Publik KPU Jombang',
-                year: '2024',
-                role: 'Project Director & Show Director',
-                p: 'Pembatalan mendadak Presenter Utama H-5 jam sebelum Live broadcast nasional.',
-                a: 'Aktivasi cepat jaringan talenta profesional lokal dan re-briefing teknis instan.',
-                r: 'Acara berjalan mulus tanpa delay dengan integrasi 10+ vendor strategis.',
-                q: 'Budget management IDR 200 Juta untuk produksi All-In.'
+                id: 'prj-1', title: 'Debat Publik KPU Jombang', year: '2024', role: 'Project Director & Show Director',
+                img: 'https://s6.imgcdn.dev/YGyt1O.jpg',
+                q: 'Budget management IDR 200 Juta untuk produksi All-In.', p: 'Pembatalan mendadak Presenter Utama H-5 jam sebelum Live broadcast.', a: 'Aktivasi jaringan talenta profesional lokal.', r: 'Acara berjalan mulus dengan 10+ vendor strategis.',
+                tags: ['Live Production', 'Crisis Mgt', 'Multi-Vendor']
             },
             'prj-2': {
-                title: 'East Java GPR Academy',
-                year: '2022',
-                role: 'Technical Lead & Disaster Recovery',
-                p: 'Software visual (Resolume) crash fatal di tengah sambutan VVIP Gubernur.',
-                a: 'Eksekusi redundancy scheme (backup laptop & hardware switcher) yang disiapkan H-1.',
-                r: 'Visual panggung pulih seketika tanpa disadari oleh audiens.',
-                q: 'Disaster recovery time diselesaikan dalam waktu < 5 detik.'
+                id: 'prj-2', title: 'GPR Academy & DLA', year: '2022', role: 'Technical Lead & Disaster Recovery',
+                img: 'https://s6.imgcdn.dev/YGy3hg.jpg',
+                q: 'Disaster recovery time diselesaikan < 5 detik.', p: 'Software visual (Resolume) crash saat VVIP Gubernur.', a: 'Eksekusi redundancy scheme yang disiapkan H-1.', r: 'Visual panggung pulih seketika.',
+                tags: ['Resolume', 'VVIP Handling']
             },
             'prj-3': {
-                title: 'Stadium LED Matrix 172m²',
-                year: '2021',
-                role: 'Head of LED & Visual Engineering',
-                p: 'Malfungsi genset eksternal membakar 20 unit Power Supply LED panggung utama.',
-                a: 'Penggantian komponen instan menggunakan stok cadangan on-site sesuai SOP mitigasi.',
-                r: 'Visual panggung normal kembali sebelum segmen utama dimulai.',
-                q: 'Zero downtime visual sepanjang konser dengan layar 172m² Fiber Optic.'
+                id: 'prj-3', title: 'Curvasudfest', year: '2021', role: 'Head of Visual Engineering',
+                img: 'https://s6.imgcdn.dev/YGye8q.jpg',
+                q: 'Zero insiden kelistrikan selama 8 jam festival musik nonstop.', p: 'Ancaman badai pada setup LED raksasa panggung festival.', a: 'Aktivasi proteksi cuaca dan re-routing cabling FO.', r: 'Visual festival aman dan dinamis menghibur crowd.',
+                tags: ['Live Music', 'LED Setup', 'Safety']
             }
         };
 
-        // Buka Project Modal
-        function openModal(id) {
-            const data = projectData[id];
-            const content = `
-                <div class="text-brand-gold mb-8 uppercase tracking-[0.4em] text-[9px] border-b border-brand-gold/20 pb-4">Project_Report_Log_${data.year}</div>
-                <h3 class="text-4xl font-extrabold mb-2 uppercase tracking-tighter text-white italic">${data.title}</h3>
-                <p class="text-slate-500 mb-12 uppercase text-[10px] tracking-widest">${data.role}</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 leading-relaxed">
-                    <div class="space-y-6">
-                        <p class="text-slate-400 font-sans">Proyek VVIP yang membutuhkan ketelitian teknis tinggi dan koordinasi kru lintas fungsi di bawah tekanan durasi live.</p>
-                        <div class="bg-brand-gold/10 p-6 border-l-2 border-brand-gold">
-                             <p class="text-brand-gold font-bold mb-2 uppercase text-[9px] tracking-widest">Key_Metric_Quantifiable:</p>
-                             <p class="text-lg text-white font-bold tracking-tighter italic">${data.q}</p>
-                        </div>
-                    </div>
-                    <div class="space-y-6 bg-white/2 p-8 border border-white/5 rounded-xl text-xs md:text-sm">
-                        <p><strong class="text-brand-gold">[P] CHALLENGE:</strong><br>${data.p}</p>
-                        <p><strong class="text-brand-gold">[A] ACTION:</strong><br>${data.a}</p>
-                        <p><strong class="text-brand-gold">[R] RESULT:</strong><br>${data.r}</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal-content').innerHTML = content;
-            document.getElementById('project-modal').style.display = 'flex';
-            document.body.classList.add('modal-active');
-        }
+        // Scroll Logic & Modal sama seperti sebelumnya
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+        let lastScroll = 0;
 
-        // Buka Gallery Modal
-        function openGalleryModal(src) {
-            document.getElementById('modal-img').src = src;
-            document.getElementById('gallery-modal').style.display = 'flex';
-            document.body.classList.add('modal-active');
-        }
-
-        // Tutup semua Modal
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            document.body.classList.remove('modal-active');
-        }
-
-        // Event Scroll untuk Parallax & Back to Top
         window.addEventListener('scroll', () => {
-            // Back to top button logic
-            const btt = document.getElementById('backToTop');
-            if (window.scrollY > 500) {
-                btt.classList.add('opacity-100', 'translate-y-0');
-            } else {
-                btt.classList.remove('opacity-100', 'translate-y-0');
-            }
-            
-            // Navbar blur logic
-            const nav = document.getElementById('navbar');
-            if(window.scrollY > 50) nav.classList.add('py-3', 'bg-brand-black/90');
-            else nav.classList.remove('py-3', 'bg-brand-black/90');
-            
-            // Parallax effect logic
-            const parallaxBgs = document.querySelectorAll('.parallax-bg');
-            let scrollY = window.pageYOffset;
-            parallaxBgs.forEach(bg => {
-                let speed = 0.4;
-                bg.style.transform = `translateY(${scrollY * speed}px)`;
-            });
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 50) { navbar.classList.add('bg-brand-black/90', 'backdrop-blur-lg', 'border-b', 'border-brand-gold/10', 'py-4'); navbar.classList.remove('bg-transparent', 'py-6'); } 
+            else { navbar.classList.remove('bg-brand-black/90', 'backdrop-blur-lg', 'border-b', 'border-brand-gold/10', 'py-4'); navbar.classList.add('bg-transparent', 'py-6'); }
+            if (currentScroll > lastScroll && currentScroll > 100) { navbar.classList.add('-translate-y-full'); } else { navbar.classList.remove('-translate-y-full'); }
+            if (currentScroll > window.innerHeight / 2) { backToTop.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none'); backToTop.classList.add('opacity-100', 'translate-y-0'); } else { backToTop.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'); backToTop.classList.remove('opacity-100', 'translate-y-0'); }
+            lastScroll = currentScroll;
         });
 
-        // Trigger Back to Top
-        document.getElementById('backToTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // Mobile Menu Logic
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-            document.getElementById('mobile-menu').classList.toggle('flex');
-        }
-        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+        const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-element').forEach(r => observer.observe(r));
 
-        // Intersection Observer (Efek Fade in text/card)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
+        const modal = document.getElementById('project-modal');
+        const modalBox = document.getElementById('modal-box');
         
-        document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+        function openProjectModal(id) {
+            const data = projectData[id];
+            document.getElementById('modal-file-name').innerHTML = `${data.id}_log.txt`;
+            document.getElementById('modal-image-src').src = data.img; // Inject Image ke Modal!
+            
+            let tagsHtml = data.tags.map(t => `<span class="text-[10px] font-mono px-3 py-1.5 bg-brand-black border border-brand-gold/20 text-brand-gold uppercase">${t}</span>`).join('');
+            document.getElementById('modal-dynamic-content').innerHTML = `
+                <div class="text-brand-gold mb-6 uppercase tracking-[0.4em] text-[9px] border-b border-brand-gold/20 pb-4 font-mono">Project_Log_${data.year}</div>
+                <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter italic text-white">${data.title}</h2>
+                <p class="text-slate-500 mb-8 uppercase text-[10px] tracking-widest font-mono">${data.role}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 font-sans">
+                    <div>
+                        <div class="bg-brand-gold/10 p-6 border-l-2 border-brand-gold mb-4"><p class="text-brand-gold font-bold mb-2 uppercase text-[9px] font-mono">Key_Metric:</p><p class="text-lg text-white font-bold italic">${data.q}</p></div>
+                        <div class="flex flex-wrap gap-2">${tagsHtml}</div>
+                    </div>
+                    <div class="space-y-4 bg-brand-black p-6 border border-white/5 rounded-sm text-sm">
+                        <p class="border-b border-white/5 pb-2"><strong class="text-brand-gold font-mono text-xs block">[P] CHALLENGE:</strong><span class="text-slate-300">${data.p}</span></p>
+                        <p class="border-b border-white/5 pb-2"><strong class="text-brand-gold font-mono text-xs block">[A] ACTION:</strong><span class="text-slate-300">${data.a}</span></p>
+                        <p><strong class="text-brand-gold font-mono text-xs block">[R] RESULT:</strong><span class="text-slate-300">${data.r}</span></p>
+                    </div>
+                </div>`;
+            modal.classList.remove('opacity-0', 'pointer-events-none'); modal.classList.add('opacity-100');
+            setTimeout(() => { modalBox.classList.remove('scale-95'); modalBox.classList.add('scale-100'); }, 10);
+            document.body.classList.add('modal-open');
+        }
+        function closeModal() {
+            modalBox.classList.remove('scale-100'); modalBox.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('opacity-0', 'pointer-events-none'); modal.classList.remove('opacity-100'); document.body.classList.remove('modal-open'); }, 200);
+        }
     </script>
 </body>
 </html>
 
-
-  
-  
+        
+        
+    
+    
